@@ -75,7 +75,7 @@ Client-server chat applications are foundational to real-time communication over
 
 ## Program :
 
-# Server 
+# Client
 ```
 import socket  
 s=socket.socket()  
