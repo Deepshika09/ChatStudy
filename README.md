@@ -77,39 +77,76 @@ Client-server chat applications are foundational to real-time communication over
 
 # Client
 ```
-import socket  
-s=socket.socket()  
-s.bind(('localhost',8000))  
-s.listen(5)  
-c,addr=s.accept() 
-while True:  
-    i=input("Enter a data: ") c.send(i.encode())  
-    ack=c.recv(1024).decode()  
-    if ack:
-    print(ack)  
-    continue  
-    else:  
-    c.close()  
-    break 
+import socket
+
+s = socket.socket()
+
+host = input("Enter hostname or host IP: ")
+port = 8080
+
+s.connect((host, port))
+
+print("Connected to chat server")
+print()
+
+while True:
+    incoming_message = s.recv(1024)
+    incoming_message = incoming_message.decode()
+
+    print("Server:", incoming_message)
+    print()
+
+    message = input(">> ")
+    message = message.encode()
+
+    s.send(message)
+
+    print("Sent")
+    print()
 ```
 # Server
 ```
-mport socket s=socket.socket()  
-s.connect(('localhost',8000))  
-while True:  
-print(s.recv(1024).decode()) 
-s.send("Acknowledgement Recived".encode()) 
+import socket
+
+s = socket.socket()
+
+host = socket.gethostname()
+print("Server will start on host:", host)
+
+port = 8080
+s.bind((host, port))
+
+print()
+print("Waiting for connection...")
+print()
+
+s.listen(1)
+
+conn, addr = s.accept()
+
+print(addr, "has connected to the server")
+print()
+
+while True:
+    message = input(">> ")
+    message = message.encode()
+
+    conn.send(message)
+
+    print("Sent")
+    print()
+
+    incoming_message = conn.recv(1024)
+    incoming_message = incoming_message.decode()
+
+    print("Client:", incoming_message)
+    print()
 ```
 
 ## Output:
 
-# Client 
+<img width="1557" height="446" alt="image" src="https://github.com/user-attachments/assets/61346ef4-72e9-4268-8d43-7805c5525a2e" />
 
-<img width="768" height="300" alt="Screenshot 2026-08-20 183348" src="https://github.com/user-attachments/assets/d41e7dea-86c6-4fec-a099-f1d3be69829d" />
-
-# Server 
-
-<img width="773" height="151" alt="Screenshot 2026-08-20 183352" src="https://github.com/user-attachments/assets/9dff6b50-80dc-4c5a-a51b-6b354aa35925" />
 
 
 ## Result:
